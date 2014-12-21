@@ -23,6 +23,9 @@ namespace Build1
 
         bool isConnectOK = false;
 
+        int s_alpha_H, s_alpha_L, s_delta;
+
+        s_alpha_H = s_alpha_L = s_delta = 0;
 
         public MainPage()
         {
@@ -99,6 +102,11 @@ namespace Build1
     void Current_CurrentValueChanged(object sender, MindwaveReadingEventArgs e)
     {
  	    //throw new NotImplementedException();
+
+        s_delta = e.SensorReading.Delta;
+
+        s_delta_t.Text = s_delta_t.ToString();
+
     }
     private void BTDeviceCon_B_Tap(object sender, System.Windows.Input.GestureEventArgs e)
     {
