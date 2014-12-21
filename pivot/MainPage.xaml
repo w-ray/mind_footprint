@@ -23,18 +23,16 @@
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
-        <phone:Pivot HeaderTemplate="{StaticResource TitleHeader}" Title="Mind Footprint" VerticalAlignment="Top" FontWeight="Light" Height="758">
+        <phone:Pivot HeaderTemplate="{StaticResource TitleHeader}" Title="Mind Footprint" VerticalAlignment="Top" FontWeight="Light" Height="758" FontFamily="Portable User Interface">
             <phone:PivotItem x:Name="pivot1"  Header="HELP" >
 
                 <StackPanel Margin="5,0,5,0" Height="673">
                     <Controls:Map HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="481" Width="450"></Controls:Map>
-                    <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="84" Maximum="100" Minimum="1"/>
+                    <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="84" Maximum="100" Minimum="1" ValueChanged="Slider_ValueChanged"/>
                 </StackPanel>
 
                 <!--Double line list with text wrapping-->
             </phone:PivotItem>
-
-            <!--Pivot item two-->
             <phone:PivotItem x:Name="pivot2" Header="Data" FontFamily="Portable User Interface" >
 
                 <StackPanel HorizontalAlignment="Left" Height="632" Margin="10,0,0,0" VerticalAlignment="Top" Width="436">
