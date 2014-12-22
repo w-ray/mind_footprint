@@ -26,74 +26,80 @@
         <phone:Pivot HeaderTemplate="{StaticResource TitleHeader}" Title="Mind Footprint" VerticalAlignment="Top" FontWeight="Light" Height="758" FontFamily="Portable User Interface">
             <phone:PivotItem x:Name="pivot1"  Header="HELP" >
 
-                <StackPanel Margin="5,0,5,0" Height="673">
+                <StackPanel Height="645">
                     <Controls:Map HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="481" Width="450"></Controls:Map>
                     <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="84" Maximum="100" Minimum="1" ValueChanged="Slider_ValueChanged"/>
+                    <Button x:Name="s_help_b" Content="HELP ME!!!"/>
                 </StackPanel>
 
                 <!--Double line list with text wrapping-->
             </phone:PivotItem>
             <phone:PivotItem x:Name="pivot2" Header="Data" FontFamily="Portable User Interface" >
 
-                <StackPanel HorizontalAlignment="Left" Height="632" Margin="10,0,0,0" VerticalAlignment="Top" Width="436">
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Delta" VerticalAlignment="Top" FontFamily="Portable User Interface" FontSize="30"/>
-                        <TextBlock x:Name="s_delta_t" HorizontalAlignment="right" Margin="70,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Theta" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_theta_t" HorizontalAlignment="right" Margin="70,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Alpha_High" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_alpha_H_t" HorizontalAlignment="right" Margin="110,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Alpha_Low" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_alpha_L_t" HorizontalAlignment="right" Margin="110,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Beta_High" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_beta_H_t" HorizontalAlignment="right" Margin="130,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Beta_Low" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_beta_L_t" HorizontalAlignment="right" Margin="130,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Gamma_High" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_gamma_H_t" HorizontalAlignment="right" Margin="130,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Gamma_Low" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_gamma_L_t" HorizontalAlignment="right" Margin="130,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Attention" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_attention_t" HorizontalAlignment="right" Margin="90,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Meditation" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_meditation_t" HorizontalAlignment="right" Margin="100,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Drowiness" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_drowsiness_val_t" HorizontalAlignment="right" Margin="100,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Coma Scale" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_coma_val_t" HorizontalAlignment="right" Margin="105,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Epilepsy" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_epilepsy_t" HorizontalAlignment="right" Margin="100,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    <Grid Height="40" Margin="2,0,0,0" >
-                        <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Signal Quality" VerticalAlignment="Top" FontSize="30"/>
-                        <TextBlock x:Name="s_signal_t" HorizontalAlignment="right" Margin="130,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="30"/>
-                    </Grid>
-                    
-                    <TextBlock x:Name="sensor_status2_t" Text="Haven't Connected to device!!" Height="42" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20" FontFamily="Portable User Interface"   />
+                <StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Height="300"  VerticalAlignment="Top" Width="450" Orientation="Horizontal" Margin="0,0,0,0">
+                        <StackPanel Height="290" Margin="0,0,0,0" HorizontalAlignment="Left" Width="225" >
+                            <Grid Height="40"  >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Delta" VerticalAlignment="Top" FontFamily="Portable User Interface" FontSize="25"/>
+                                <TextBlock x:Name="s_delta_t" HorizontalAlignment="right" Margin="0,0,125,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40"  >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Theta" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_theta_t" HorizontalAlignment="right" Margin="0,0,125,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Alpha_High" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_alpha_H_t" HorizontalAlignment="right" Margin="0,0,80,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Alpha_Low" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_alpha_L_t" HorizontalAlignment="right" Margin="0,0,80,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Beta_High" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_beta_H_t" HorizontalAlignment="right" Margin="0,0,85,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Beta_Low" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_beta_L_t" HorizontalAlignment="right" Margin="0,0,85,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Gamma_High" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_gamma_H_t" HorizontalAlignment="right" Margin="0,0,60,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Height="290" Margin="0,0,0,0" HorizontalAlignment="Right" Width="225">
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Gamma_Low" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_gamma_L_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Attention" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_attention_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Meditation" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_meditation_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Drowiness" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_drowsiness_val_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Coma Scale" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_coma_val_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Epilepsy" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_epilepsy_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                            <Grid Height="40" Margin="0,0,0,0" >
+                                <TextBlock HorizontalAlignment="Left" Margin="0,0,0,0" TextWrapping="Wrap" Text="Signal Quality" VerticalAlignment="Top" FontSize="25"/>
+                                <TextBlock x:Name="s_signal_t" HorizontalAlignment="right" Margin="0,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Foreground="#FF84FF71" FontSize="25"/>
+                            </Grid>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock x:Name="sensor_status2_t" Text="Haven't Connected to device!!" Height="42" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="52,0,51,0" FontFamily="Portable User Interface"   />
                 </StackPanel>
 
 
@@ -101,26 +107,28 @@
             </phone:PivotItem>
             <phone:PivotItem x:Name="pivot3" Header="Setting" Margin="0,0,0,0">
                 <StackPanel>
-                    <Grid Height="186">
-                        <TextBlock Text="Bluetooth" Margin="10,10,140,131" FontSize="30" FontFamily="Portable User Interface"/>
-                        <Slider x:Name="BT_s" Margin="375,10,20,92" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="BT_s_ValueChanged" />
-                        <TextBlock Text="Location Service" Margin="10,89,140,52" FontSize="30"/>
-                        <Slider x:Name="LS_s" Height="100" Margin="375,76,20,10" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="Slider_ValueChanged" />
-                    </Grid>
-                    <StackPanel HorizontalAlignment="Center" Height="475" Margin="22,0,22,0" VerticalAlignment="Top" Width="436">
+                    <Grid Height="338">
+                        <TextBlock Text="Bluetooth" Margin="10,10,140,291" FontSize="30" FontFamily="Portable User Interface"/>
+                        <Slider x:Name="BT_s" Margin="375,-2,20,244" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="BT_s_ValueChanged" />
+                        <TextBlock Text="Location Service" Margin="10,89,140,204" FontSize="30"/>
+                        <Slider x:Name="LS_s" Margin="375,89,20,161" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="Slider_ValueChanged" />
+                        <TextBlock HorizontalAlignment="Left" Margin="10,162,0,0" TextWrapping="Wrap" Text="Emergency phone number (Press Enter To Referesh)" VerticalAlignment="Top" Width="460" Height="25" FontFamily="Segoe UI"/>
+                        <TextBox x:Name="s_e_num_tbox" HorizontalAlignment="Left" Height="64" Margin="0,187,0,0" TextWrapping="Wrap" Text="Emergency Phone Number" VerticalAlignment="Top" Width="456" FontSize="18" AcceptsReturn="True" InputScope="Number" TextChanged="s_e_num_tbox_TextChanged"/>
+                        </Grid>
+                    <StackPanel HorizontalAlignment="Center" Height="385" Margin="22,-60,22,0" VerticalAlignment="Top" Width="436">
 
                         <StackPanel Height="88" Orientation="Horizontal">
                             <Button x:Name="BTConfig_b" Content="Show BT" Width="100" FontSize="20" Tap="BTConfig_b_Tap"/>
                             <Button x:Name="BTDeviceCon_b" Content="Connect Device" Width="157" FontSize="14" Tap="BTDeviceCon_b_Tap" />
-                            <TextBox x:Name="BTDeviceCon_t" TextWrapping="Wrap" Text=" " Width="179" Margin="0,10" FontSize="15" VerticalAlignment="Center" Height="68"/>
+                            <TextBox x:Name="BTDeviceCon_t" TextWrapping="Wrap" Text=" " Width="179" Margin="0,10" FontSize="15" VerticalAlignment="Center" Height="68" VerticalScrollBarVisibility="Auto"/>
                         </StackPanel>
-                        <StackPanel Height="386.5" Orientation="Horizontal" RenderTransformOrigin="0.5,0.5" Margin="0.886,0,-0.886,0" UseLayoutRounding="False" d:LayoutRounding="Auto">
+                        <StackPanel Height="306.5" Orientation="Horizontal" RenderTransformOrigin="0.5,0.5" Margin="0.301,0,-0.301,0" UseLayoutRounding="False" d:LayoutRounding="Auto">
                             <StackPanel.RenderTransform>
                                 <CompositeTransform SkewX="0.838" TranslateX="0.732"/>
                             </StackPanel.RenderTransform>
-                            <StackPanel Width="226" Margin="0,0,0,-0.5">
+                            <StackPanel Width="226" Margin="0,0,0,85.5">
                                 <TextBlock TextWrapping="Wrap" Text="Paired BT Device Discover" FontSize="14" Margin="0,0,36,0"/>
-                                <ListBox Grid.ColumnSpan="2" x:Name="Discovered_BT_List" FontFamily="Portable User Interface" Height="373">
+                                <ListBox Grid.ColumnSpan="2" x:Name="Discovered_BT_List" FontFamily="Portable User Interface" Height="289">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -143,9 +151,9 @@
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </StackPanel>
-                            <StackPanel Width="208" Margin="0,0,0,0">
+                            <StackPanel Width="208" Margin="0,0,0,85.5">
                                 <TextBlock TextWrapping="Wrap" Text="Sensor Status" FontSize="14" FontFamily="Portable User Interface"/>
-                                <TextBlock x:Name="sensor_status_t" TextWrapping="Wrap" Text=" " Height="366" FontSize="10" TextOptions.TextHintingMode="Animated" LineStackingStrategy="BaselineToBaseline"/>
+                                <TextBlock x:Name="sensor_status_t" TextWrapping="Wrap" Text=" " Height="286" FontSize="10" TextOptions.TextHintingMode="Animated" LineStackingStrategy="BaselineToBaseline" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" FontFamily="Portable User Interface"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
