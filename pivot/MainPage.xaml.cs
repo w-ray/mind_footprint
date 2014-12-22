@@ -15,6 +15,9 @@ using Microsoft.Phone.Maps.Controls;
 using Windows.Networking.Proximity;
 using System.Runtime.InteropServices;
 using System.Text;
+using Windows.Networking.Sockets;
+using Microsoft.Phone.Tasks;
+
 namespace Build1
 {
     
@@ -34,6 +37,7 @@ namespace Build1
         int s_beta_H = 0, s_beta_L = 0;
         double s_attention = 0.0, s_meditation = 0.0, s_signal = 0.0;
         double s_drowsiness_val = 0.0, s_coma_val = 0.0, s_epilepsy = 0.0;
+        int s_emergency_num = 0;
 
         public MainPage()
         {
@@ -155,6 +159,18 @@ namespace Build1
 
             s_gamma_L_t.Text = s_gamma_L.ToString();
 
+            s_signal = e.SensorReading.Quality;
+
+            s_signal_t.Text = s_signal.ToString();
+
+            s_attention = e.SensorReading.eSenseAttention;
+
+            s_attention_t.Text = s_attention.ToString();
+
+            s_meditation = e.SensorReading.eSenseMeditation;
+
+            s_meditation_t.Text = s_meditation.ToString();
+
 
         }
 
@@ -199,6 +215,13 @@ namespace Build1
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
+        }
+
+
+
+        private void s_e_num_tbox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            s_emergency_num = Convert.ToInt32(s_e_num_tbox.Text);
         }
 
 
