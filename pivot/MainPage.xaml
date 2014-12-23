@@ -27,8 +27,14 @@
             <phone:PivotItem x:Name="pivot1"  Header="HELP" >
 
                 <StackPanel Height="645">
-                    <Controls:Map HorizontalAlignment="Left" Margin="10,5,0,5" VerticalAlignment="Top" Height="481" Width="450"></Controls:Map>
+                    <maps:Map x:Name="map_with_loc" HorizontalAlignment="Left" Margin="10,5,-4,5" VerticalAlignment="Top" Height="365" Width="450"/>
                     <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Width="460" Height="84" Maximum="100" Minimum="1" ValueChanged="Slider_ValueChanged"/>
+                    <Grid>
+                        <TextBlock Text="latitude :" />
+                        <TextBlock Text="Longtitude :" Margin="0,20"/>
+                        <TextBlock x:Name="latitude_t" Text="0" Margin="80,0,0,0"/>
+                        <TextBlock x:Name="longtitude_t" Text="0" Margin="110,20,0,0"/>
+                    </Grid>
                     <Button x:Name="s_help_b" Content="HELP ME!!!"/>
                 </StackPanel>
 
@@ -99,7 +105,7 @@
                             </Grid>
                         </StackPanel>
                     </StackPanel>
-                    <TextBlock x:Name="sensor_status2_t" Text="Haven't Connected to device!!" Height="42" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="52,0,51,0" FontFamily="Portable User Interface"   />
+                    <TextBlock x:Name="sensor_status2_t" Text="Haven't Connected to device!!" Height="42" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0" FontFamily="Portable User Interface" Width="436" TextAlignment="Center"   />
                 </StackPanel>
 
 
@@ -112,9 +118,9 @@
                         <Slider x:Name="BT_s" Margin="375,-2,20,244" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="BT_s_ValueChanged" />
                         <TextBlock Text="Location Service" Margin="10,89,140,204" FontSize="30"/>
                         <Slider x:Name="LS_s" Margin="375,89,20,161" FontFamily="Portable User Interface" Maximum="1" SmallChange="1" ValueChanged="Slider_ValueChanged" />
-                        <TextBlock HorizontalAlignment="Left" Margin="10,162,0,0" TextWrapping="Wrap" Text="Emergency phone number (Press Enter To Referesh)" VerticalAlignment="Top" Width="460" Height="25" FontFamily="Segoe UI"/>
-                        <TextBox x:Name="s_e_num_tbox" HorizontalAlignment="Left" Height="64" Margin="0,187,0,0" TextWrapping="Wrap" Text="Emergency Phone Number" VerticalAlignment="Top" Width="456" FontSize="18" AcceptsReturn="True" InputScope="Number" TextChanged="s_e_num_tbox_TextChanged"/>
-                        </Grid>
+                        <TextBlock HorizontalAlignment="Left" Margin="10,162,0,0" TextWrapping="Wrap" Text="Emergency phone number" VerticalAlignment="Top" Width="460" Height="25" FontFamily="Segoe UI"/>
+                        <TextBox x:Name="s_e_num_tbox" HorizontalAlignment="Left" Height="64" Margin="0,187,0,0" TextWrapping="Wrap" Text=" " VerticalAlignment="Top" Width="456" FontSize="18" AcceptsReturn="True" InputScope="Number" TextChanged="s_e_num_tbox_TextChanged"/>
+                    </Grid>
                     <StackPanel HorizontalAlignment="Center" Height="385" Margin="22,-60,22,0" VerticalAlignment="Top" Width="436">
 
                         <StackPanel Height="88" Orientation="Horizontal">
