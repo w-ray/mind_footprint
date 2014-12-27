@@ -7,88 +7,28 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using MindFoorprint.Resources;
 using LML_WP;
 using MyMindWave.MindwaveSensor.WP8;
-using System.Windows.Media;
-using Microsoft.Phone.Maps.Controls;
 using Windows.Networking.Proximity;
-using System.Runtime.InteropServices;
-using System.Text;
-using Windows.Networking.Sockets;
-using Microsoft.Phone.Tasks;
-using Google.GData.Client;
-using Google.GData.Extensions;
-using Google.GData.Spreadsheets;
-using Microsoft.Phone.Maps.Controls;
-using System.Device.Location; // Provides the GeoCoordinate class.
-using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
+using System.Device.Location;
+using Windows.Devices.Geolocation;
 using System.Windows.Shapes;
-using MindFootprint.Resources;
-using Microsoft.Phone.Tasks;
-using System.ComponentModel;
-using System.Threading;
-using Google.GData.Spreadsheets;
-using Google.GData.Extensions;
-using Google.GData.Client;
 
-
-namespace MindFootprint
+namespace MindFoorprint
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            SpreadsheetsService service = new SpreadsheetsService("MySpreadsheetIntegration-v1");
-
-            // TODO: Authorize the service object for a specific user (see other sections)
-
-            // Instantiate a SpreadsheetQuery object to retrieve spreadsheets.
-            SpreadsheetQuery query = new SpreadsheetQuery();
-
-            // Make a request to the API and get all spreadsheets.
-            SpreadsheetFeed feed = service.Query(query);
-
-            if (feed.Entries.Count == 0)
-            {
-                // TODO: There were no spreadsheets, act accordingly.
-            }
-
-            // TODO: Choose a spreadsheet more intelligently based on your
-            // app's needs.
-            SpreadsheetEntry spreadsheet = (SpreadsheetEntry)feed.Entries[0];
-
-            // Make a request to the API to fetch information about all
-            // worksheets in the spreadsheet.
-            WorksheetFeed wsFeed = spreadsheet.Worksheets;
-
-            // Create a local representation of the new worksheet.
-            WorksheetEntry worksheet = new WorksheetEntry();
-            worksheet.Title.Text = "New Worksheet";
-            worksheet.Cols = 10;
-            worksheet.Rows = 20;
-
-            // Send the local representation of the worksheet to the API for
-            // creation.  The URL to use here is the worksheet feed URL of our
-            // spreadsheet.
-            service.Insert(wsFeed, worksheet);
-        }
-    }
-
-
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
-
         BT_In MyBT;
 
         bool isBrainConnected = false;
 
         bool isConnectOK = false;
 
-        int s_alpha_H = 0, s_alpha_L = 0;
-        int s_delta = 0, s_theta = 0;
-        int s_gamma_H = 0, s_gamma_L = 0;
-        int s_beta_H = 0, s_beta_L = 0;
+        long s_alpha_H = 0, s_alpha_L = 0;
+        long s_delta = 0, s_theta = 0;
+        long s_gamma_H = 0, s_gamma_L = 0;
+        long s_beta_H = 0, s_beta_L = 0;
         double s_attention = 0.0, s_meditation = 0.0, s_signal = 0.0;
         double s_drowsiness_val = 0.0, s_epilepsy = 0.0;
         string s_emergency_num;
@@ -98,30 +38,29 @@ namespace MindFootprint
         double g_mean = 0, gt = 1, g_ms = 0;
         int i = 0, j = 0;
         double latitude = 0, longitude = 0;
-        string status;
+        string status = " ";
         int userid = 0;
         bool message_sent = false;
-        string myURL;
-        long delta_sum = 0;
         int data_id = 0;
         bool data_ready = false;
         int data_max = 20;
         long[] delta;
+        long[] theta;
+        long[] gamma;
+        long delta_sum = 0, theta_sum = 0, gamma_sum = 0;
+        long delta_s_sum = 0, theta_s_sum = 0, gamma_s_sum = 0;
+        double[] d_amp;
+        string myURL;
 
 
         GeoCoordinateWatcher myGPS = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
 
-
-
-
-
+        // Constructor
         public MainPage()
         {
             InitializeComponent();
 
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
-
+            // Set the data context of the listbox control to the sample data
             MyBT = new BT_In();
 
             Discovered_BT_List.ItemsSource = MyBT.pairedDevicesList;
@@ -131,12 +70,14 @@ namespace MindFootprint
             myGPS.Start();
 
             latitude = longitude = -999;
-            
+
             delta = new long[data_max];
-
+            theta = new long[data_max];
+            gamma = new long[data_max];
+            d_amp = new double[data_max];
+            // Sample code to localize the ApplicationBar
+            //BuildLocalizedApplicationBar();
         }
-
-        
 
         void myGPS_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
@@ -148,7 +89,7 @@ namespace MindFootprint
 
                 latitude_t.Text = latitude.ToString();
                 longitude_t.Text = longitude.ToString();
-                               
+
             }
             catch (Exception err)
             {
@@ -156,7 +97,6 @@ namespace MindFootprint
             }
         }
 
-       
 
         // Load data for the ViewModel Items
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -172,11 +112,6 @@ namespace MindFootprint
             isBrainConnected = false;
 
             MyBT.RefreshPairedDevicesList();
-        }
-        
-        private void s_e_num_tbox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            s_emergency_num = s_e_num_tbox.Text;
         }
 
         private void ConnectToBrain()
@@ -212,6 +147,19 @@ namespace MindFootprint
             }
         }
 
+
+        private double getStandardDeviation(List<double> doubleList)
+        {
+            double average = doubleList.Average();
+            double sumOfDerivation = 0;
+            foreach (double value in doubleList)
+            {
+                sumOfDerivation += (value) * (value);
+            }
+            double sumOfDerivationAverage = sumOfDerivation / (doubleList.Count - 1);
+            return Math.Sqrt(sumOfDerivationAverage - (average * average));
+        }  
+
         void Current_StateChanged(object sender, MindwaveStateChangedEventArgs e)
         {
             //throw new NotImplementedException();
@@ -234,11 +182,13 @@ namespace MindFootprint
                 sensor_status2_t.Foreground = new SolidColorBrush(Colors.Red);
             */
         }
+            
+
 
         void Current_CurrentValueChanged(object sender, MindwaveReadingEventArgs e)
         {
             //throw new NotImplementedException();
-           
+            List<double> delta_list = new List<double>();
             s_signal = e.SensorReading.Quality;
             s_signal_t.Text = s_signal.ToString();
             if (isConnectOK)
@@ -263,12 +213,11 @@ namespace MindFootprint
                 s_gamma_L_t.Text = s_gamma_L.ToString();
                 s_attention_t.Text = s_attention.ToString();
                 s_meditation_t.Text = s_meditation.ToString();
-                j++;
-                
-
 
                 
                 delta[data_id] = s_delta;
+                theta[data_id] = s_theta;
+                gamma[data_id] = (s_gamma_H + s_gamma_L) / 2;
                 data_id++;
 
                 if (data_id == data_max)
@@ -279,36 +228,84 @@ namespace MindFootprint
 
                 if (data_ready)
                 {
-                    long delta_sum = 0;
-                    double delta_s_sum = 0;
+                    int a = 0;
                     for (i = 0; i < data_max; i++)
                     {
                         delta_sum = delta_sum + delta[i];
-                        delta_s_sum = delta_s_sum + delta[i] * delta[i];
+                        theta_sum = theta_sum + theta[i];
+                        gamma_sum = gamma_sum + gamma[i];
+                        delta_list.Add(delta[i]);
+                        /*delta_s_sum = delta_s_sum + delta[i] * delta[i];
+                        theta_s_sum = theta_s_sum + theta[i] * theta[i];
+                        gamma_s_sum = gamma_s_sum + gamma[i] * gamma[i];*/
                     }
+
                     d_mean = delta_sum / data_max;
-                    d_ms = delta_s_sum / data_max - d_mean * d_mean;
+                    t_mean = theta_sum / data_max;
+                    g_mean = gamma_sum / data_max;
+                    d_ms = getStandardDeviation(delta_list);
+
+/*                    d_ms = delta_s_sum / data_max - d_mean * d_mean;
+                    t_ms = theta_s_sum / data_max - t_mean * t_mean;
+                    g_ms = gamma_s_sum / data_max - g_mean * g_mean;*/
 
 
 
-                    try
+                    for (i = 0; i < data_max; i++)
                     {
-                        myURL = "http://api.pushingbox.com/pushingbox?devid=vEA2A919C89FD9D3&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + g_ms.ToString() + "&s_coma_val=" + d_ms.ToString();
-                        myURL += "&remark=\"" + status + "\"";
+                        d_amp[i] = d_ms + d_mean;
+                        if (d_amp[i] > 1500000)
+                        {
+                            a++;
+                        }
+                    }
+                    if (a > 5)
+                    {
+                        status = "In Coma/Sleep";
+                        try
+                        {
+                            myURL = "http://api.pushingbox.com/pushingbox?devid=vEA2A919C89FD9D3&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + g_ms.ToString() + "&s_coma_val=" + d_ms.ToString();
+                            myURL += "&remark=\"" + status + "\"";
+                            HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
 
-                        HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
-
-                        httpReq.BeginGetResponse(new AsyncCallback(GetAsyncResponse), httpReq);
+                            httpReq.BeginGetResponse(new AsyncCallback(GetAsyncResponse), httpReq);
+                        }
+                        catch(Exception err)
+                        {
+                            MessageBox.Show(err.Message + myURL);
+                        }
 
                     }
-                    catch (Exception err)
+                    else
                     {
-                        MessageBox.Show(err.Message + "    " + myURL);
+                        status = "Normal";
+                        try
+                        {
+                            myURL = "http://api.pushingbox.com/pushingbox?devid=vEA2A919C89FD9D3&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + g_ms.ToString() + "&s_coma_val=" + d_ms.ToString();
+                            myURL += "&remark=\"" + status + "\"";
+
+                            HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
+
+                            httpReq.BeginGetResponse(new AsyncCallback(GetAsyncResponse), httpReq);
+
+                        }
+                        catch (Exception err)
+                        {
+                            MessageBox.Show(err.Message);
+                        }
                     }
+
+
+                        
                 }            
             }
         }
-    
+
+        public void GetAsyncResponse(IAsyncResult result)
+        {
+
+        }
+
         private void help_b_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             status = "User Need Help";
@@ -320,16 +317,6 @@ namespace MindFootprint
 
             httpReq.BeginGetResponse(new AsyncCallback(GetAsyncResponse), httpReq);
         }
-
-
-
-
-
-        private void GetAsyncResponse(IAsyncResult result)
-        {
-        }
-
-
 
         private void BTDeviceCon_b_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -363,22 +350,6 @@ namespace MindFootprint
             }
         }
 
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
@@ -393,6 +364,7 @@ namespace MindFootprint
 
         //    // Create a new menu item with the localized string from AppResources.
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);}
+        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
+        //}
     }
 }
