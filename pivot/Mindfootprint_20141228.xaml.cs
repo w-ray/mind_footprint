@@ -48,11 +48,16 @@ namespace MindFoorprint
         long[] gamma;
         double[] sleep;
         double[] epilepsy;
+        double[] stdev_delta;
         string myURL;
         int count_max = 10, count_sent = 0;
         int delta_sleep_thersold = 80000;
         int gamma_sleep_thersold = 3000;
-        string deviceid = "v66813EB35326281";
+        int delta_stdev_thersold = 1000000;
+        string deviceid = "vA51A78A5DAEBBBC";
+        double sleep_this = 0;
+        double epilepsy_this = 0;
+        double delta_stdev_this = 0;
         Random rnd = new Random();
 
 
@@ -80,6 +85,7 @@ namespace MindFoorprint
             gamma = new long[data_max];
             sleep = new double[count_max];
             epilepsy = new double[count_max];
+            stdev_delta = new double[count_max];
             
             PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             
@@ -229,13 +235,13 @@ namespace MindFoorprint
                     double delta_s_sum = 0;
                     double gamma_s_sum = 0;
                     long delta_sum = 0, theta_sum = 0, gamma_sum = 0;
-                    double sleep_this = 0;
-                    double epilepsy_this = 0;
+
 
                     if (data_ready)
                     {
                         int count_delta_sleep= 0;
                         int count_gamma_sleep = 0;
+                        int count_delta_stdev = 0;
                         for (i = 0; i < data_max; i++)
                         {
                             delta_sum = delta_sum + delta[i];
@@ -274,6 +280,8 @@ namespace MindFoorprint
 
                         sleep_this = sleep[count_sent] = d_mean;
                         epilepsy_this = epilepsy[count_sent] = g_mean;
+                        delta_stdev_this = stdev_delta[count_sent] = d_ms;
+
 
                         s_delta_t.Text = s_delta.ToString();
                         s_theta_t.Text = s_theta.ToString();
@@ -285,6 +293,9 @@ namespace MindFoorprint
                         s_gamma_L_t.Text = s_gamma_L.ToString();
                         s_attention_t.Text = s_attention.ToString();
                         s_meditation_t.Text = s_meditation.ToString();
+                        s_drowsiness_val_t.Text = delta_stdev_this.ToString("0.00");
+                        s_g_ms_t.Text = g_ms.ToString("0.00");
+                        
 
                         s_coma_val_t.Text = sleep_this.ToString("0.00");
                         s_epilepsy_t.Text = epilepsy_this.ToString("0.00");
@@ -304,6 +315,7 @@ namespace MindFoorprint
                             count_sent = 0;
                             count_delta_sleep = 0;
                             count_gamma_sleep = 0;
+                            count_delta_stdev = 0;
                             foreach (double value in sleep)
                             {
                                 if (value < delta_sleep_thersold)
@@ -312,17 +324,21 @@ namespace MindFoorprint
                             foreach (double value in epilepsy)
                             {
                                 if (value < gamma_sleep_thersold)
-                                    count_gamma_sleep++;
-                                    
+                                    count_gamma_sleep++;                                    
+                            }
+                            foreach (double value in stdev_delta)
+                            {
+                                if (value > delta_stdev_thersold)
+                                    count_delta_stdev++;
                             }
 
 
-                            if ((count_delta_sleep > 5)&&(count_gamma_sleep>5))
+                            if (((count_delta_sleep > 5)&&(count_gamma_sleep > 5)) || (count_delta_stdev > 5))
                             {
                                 status = "User is sleeping";
                                 try
                                 {
-                                    myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + epilepsy_this.ToString() + "&s_coma_val=" + sleep_this.ToString();
+                                    myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_g_ms=" + g_ms.ToString() + "&s_drowsiness_val=" + delta_stdev_this.ToString() + "&s_epilepsy=" + epilepsy_this.ToString() + "&s_coma_val=" + sleep_this.ToString();
                                     myURL += "&remark=\"" + status + "\"";
                                     HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
 
@@ -338,7 +354,7 @@ namespace MindFoorprint
                                 status = "Normal";
                                 try
                                 {
-                                    myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + g_ms.ToString() + "&s_coma_val=" + sleep_this.ToString();
+                                    myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_g_ms=" + g_ms.ToString() + "&s_drowsiness_val=" + delta_stdev_this.ToString() + "&s_epilepsy=" + epilepsy_this.ToString() + "&s_coma_val=" + sleep_this.ToString();
                                     myURL += "&remark=\"" + status + "\"";
                                     HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
 
@@ -364,10 +380,11 @@ namespace MindFoorprint
 
         private void help_b_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            
             int userid = rnd.Next(1, 5);
             status = "User Need Help";
 
-            myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_signal=" + s_signal.ToString() + "&s_drowsiness_val=" + t_ms.ToString() + "&s_epilepsy=" + g_ms.ToString() + "&s_coma_val=" + d_ms.ToString();
+            myURL = "http://api.pushingbox.com/pushingbox?devid=" + deviceid + "&UserID=" + userid.ToString() + "&latitude=" + latitude.ToString() + "&longitude=" + longitude.ToString() + "&s_delta=" + s_delta.ToString() + "&s_theta=" + s_theta.ToString() + "&s_alpha_H=" + s_alpha_H.ToString() + "&s_alpha_L=" + s_alpha_L.ToString() + "&s_beta_H=" + s_beta_H.ToString() + "&s_beta_L=" + s_beta_L.ToString() + "&s_gamma_H=" + s_gamma_H.ToString() + "&s_gamma_L=" + s_gamma_L.ToString() + "&s_attention=" + s_attention.ToString() + "&s_meditation=" + s_meditation.ToString() + "&s_g_ms=" + g_ms.ToString() + "&s_drowsiness_val=" + delta_stdev_this.ToString() + "&s_epilepsy=" + epilepsy_this.ToString() + "&s_coma_val=" + sleep_this.ToString();
             myURL += "&remark=\"" + status + "\"";
 
             HttpWebRequest httpReq = (HttpWebRequest)HttpWebRequest.Create(myURL);
